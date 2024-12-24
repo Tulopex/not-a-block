@@ -1,0 +1,52 @@
+.app {
+  text-align: center;
+}
+
+.board {
+  display: inline-block;
+  margin: 20px;
+}
+
+.board-row {
+  display: flex;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  display: inline-block;
+}
+
+.cell.filled {
+  background-color: orange;
+}
+
+.cell.highlighted {
+  background-color: lightgray;
+}
+
+.shapes {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.shape {
+  margin: 10px;
+  display: inline-block;
+}
+
+.shape-row {
+  display: flex;
+}
+
+.shape-cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #aaa;
+}
+
+.shape-cell.filled {
+  background-color: blue;
+}
