@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 function App() {
@@ -10,28 +10,23 @@ function App() {
   const [availableShapes, setAvailableShapes] = useState([]);
   const [draggedShape, setDraggedShape] = useState(null);
   const [highlightedCells, setHighlightedCells] = useState([]);
-  const [isDragging, setIsDragging] = useState(false); // Новое состояние для отслеживания перетаскивания
+  const [isDragging, setIsDragging] = useState(false);
 
-  const shapes = [
-    [[1, 1, 1, 1]], // Линия 4
-    [[1], [1], [1], [1]], // Линия 4
-    [[1, 1, 1]], // Линия 3 горизонтальная
-    [[1], [1], [1]], // Линия 3 вертикальная
-    [[1, 1]], // Линия 2 горизонтальная
-    [[1], [1]], // Линия 2 вертикальная
-    [[1, 1], [1, 0]], // Угловая
-    [[1, 1], [0, 1]], // Угловая зеркальная
-    [[1, 1], [1, 1]], // Квадрат 2x2
-    [[1]], // Один блок
-    [[0, 1, 0], [1, 1, 1]], // Верхняя часть квадрата
-  ];
-
-  useEffect(() => {
-    generateShapes();
-  }, []);
-
-  // Генерация фигур
-  const generateShapes = () => {
+  const generateShapes = useCallback(() => {
+    const shapes = [
+      [[1, 1, 1, 1]], // Линия 4
+      [[1], [1], [1], [1]], // Линия 4
+      [[1, 1, 1]], // Линия 3 горизонтальная
+      [[1], [1], [1]], // Линия 3 вертикальная
+      [[1, 1]], // Линия 2 горизонтальная
+      [[1], [1]], // Линия 2 вертикальная
+      [[1, 1], [1, 0]], // Угловая
+      [[1, 1], [0, 1]], // Угловая зеркальная
+      [[1, 1], [1, 1]], // Квадрат 2x2
+      [[1]], // Один блок
+      [[0, 1, 0], [1, 1, 1]], // Верхняя часть квадрата
+    ];
+  
     const newShapes = [];
     for (let i = 0; i < 3; i++) {
       const randomIndex = Math.floor(Math.random() * shapes.length);
@@ -40,7 +35,12 @@ function App() {
     setAvailableShapes(newShapes);
     setDraggedShape(null);
     setHighlightedCells([]);
-  };
+  }, []);
+
+  useEffect(() => {
+    generateShapes();
+  }, [generateShapes]);
+
 
   // Начало перетаскивания (для мышки)
   const handleDragStart = (shape) => {
