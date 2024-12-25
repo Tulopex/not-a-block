@@ -48,12 +48,7 @@ function App() {
     setIsDragging(true); // Устанавливаем флаг перетаскивания
   };
 
-  // Обработка начала перетаскивания на мобильных устройствах
-  const handleTouchStart = (e, shape) => {
-    e.preventDefault();
-    setDraggedShape(shape);
-    setIsDragging(true); // Устанавливаем флаг перетаскивания
-  };
+ 
 
   // Проверка, можно ли разместить фигуру
   const canPlaceShape = (shape, row, col) => {
@@ -192,7 +187,6 @@ function App() {
                     handleDragOver(rowIndex, colIndex);
                   }}
                   onDrop={() => handleDrop(rowIndex, colIndex)}
-                  onTouchStart={(e) => handleTouchStart(e, draggedShape)}
                   onTouchEnd={(e) => handleTouchEnd(e, rowIndex, colIndex)}
                 />
               );
@@ -213,7 +207,6 @@ function App() {
               setHighlightedCells([]);
               setIsDragging(false);
             }}
-            onTouchStart={(e) => handleTouchStart(e, shape)}
             onTouchEnd={(e) => handleTouchEnd(e, 0, 0)} // Это не важно, поскольку мы сразу обновляем состояние
           >
             {shape.map((row, rowIndex) => (
