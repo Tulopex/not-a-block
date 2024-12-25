@@ -44,9 +44,17 @@
 .shape-cell {
   width: 40px;
   height: 40px;
-  border: 1px solid #aaa;
+  border: 1px solid transparent; /* Прозрачная граница для всех клеток */
+  display: inline-block;
+  box-sizing: border-box; /* Учитываем границы в размере клетки */
 }
 
 .shape-cell.filled {
   background-color: blue;
+  border: 1px solid #aaa; /* Видимая граница для заполненных клеток */
+}
+
+/* Убираем обводку у пустых клеток */
+.shape-cell:not(.filled) {
+  border: none;
 }
