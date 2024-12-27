@@ -1,60 +1,18 @@
-.app {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #0d0d0d;
+  color: #ffffff;
+}
+
+:root {
+  --bg-color: #0d0d0d;
+  --text-color: #ffffff;
+  --menu-color: #151516;
+  --extra-color: #727272;
+}
+
+.App {
   text-align: center;
-}
-
-.board {
-  display: inline-block;
-  margin: 20px;
-}
-
-.board-row {
-  display: flex;
-}
-
-.cell {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
-  display: inline-block;
-}
-
-.cell.filled {
-  background-color: orange;
-}
-
-.cell.highlighted {
-  background-color: lightgray;
-}
-
-.shapes {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.shape {
-  margin: 10px;
-  display: inline-block;
-}
-
-.shape-row {
-  display: flex;
-}
-
-.shape-cell {
-  width: 40px;
-  height: 40px;
-  border: 1px solid transparent; /* Прозрачная граница для всех клеток */
-  display: inline-block;
-  box-sizing: border-box; /* Учитываем границы в размере клетки */
-}
-
-.shape-cell.filled {
-  background-color: blue;
-  border: 1px solid #aaa; /* Видимая граница для заполненных клеток */
-}
-
-/* Убираем обводку у пустых клеток */
-.shape-cell:not(.filled) {
-  border: none;
 }

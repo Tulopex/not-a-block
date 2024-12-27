@@ -1,0 +1,83 @@
+:root {
+    --color-1: #FF5733;
+    --color-2: #33FF57;
+    --color-3: #3357FF;
+    --color-4: #F39C12;
+    --color-5: #9B59B6;
+    --color-6: #16A085;
+    --color-7: #C0392B;
+    --color-8: #2980B9;
+}
+  
+.board {
+    display: inline-block;
+    margin: 20px;
+}
+
+.board-row {
+  display: flex;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  display: inline-block;
+}
+
+.cell.filled {
+  background-color: orange;
+}
+
+.cell.highlighted {
+  background-color: lightgray;
+}
+
+.shapes {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.shape {
+  margin: 10px;
+  display: inline-block;
+}
+
+.shape-row {
+  display: flex;
+}
+
+.shape-cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid transparent; /* Прозрачная граница для всех клеток */
+  display: inline-block;
+  box-sizing: border-box; /* Учитываем границы в размере клетки */
+}
+
+.shape-cell.filled {
+    background-color: var(--shape-color, #ccc);
+}
+.cell.highlighted {
+  background-color: var(--shape-color, #ccc);
+}
+
+
+/* Убираем обводку и задний фон у пустых клеток */
+.shape-cell:not(.filled) {
+  border: none;
+  background-color: transparent;
+}
+
+.game-over {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 100;
+}
