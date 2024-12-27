@@ -2,8 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #0d0d0d;
-  color: #ffffff;
 }
 
 :root {
@@ -15,4 +13,5 @@
 
 .App {
   text-align: center;
+  background-color: var(--bg-color);
 }

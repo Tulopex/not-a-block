@@ -4,7 +4,7 @@ import './Header.css';
 function Header() {
   return (
     <div className='Header'>
-        <h1>Not a Block</h1>
+        <h1 className='title'>Not a Block</h1>
     </div>
   );
 }

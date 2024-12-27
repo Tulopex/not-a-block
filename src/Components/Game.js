@@ -45,7 +45,7 @@ function Game() {
     const colors = getCSSColors();
 
     const newShapes = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       const randomIndex = Math.floor(Math.random() * shapes.length);
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       newShapes.push({ shape: shapes[randomIndex], color: randomColor });
