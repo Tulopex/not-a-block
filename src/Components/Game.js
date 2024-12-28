@@ -1,16 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import './Game.css';
+import { useDrag, useDrop } from 'react-dnd';
+import '../Styles/Game.css';
+
+const GRID_SIZE = 8;
 
 function Game() {
-  const GRID_SIZE = 8;
-
   const [grid, setGrid] = useState(
     Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null))
   );
   const [availableShapes, setAvailableShapes] = useState([]);
-  const [draggedShape, setDraggedShape] = useState(null);
-  const [highlightedCells, setHighlightedCells] = useState([]);
-  const [isDragging, setIsDragging] = useState(false);
+  const [shapesPlaced, setShapesPlaced] = useState(0); // Счётчик размещённых фигур
 
   const getCSSColors = () => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -25,8 +24,6 @@ function Game() {
     const shapes = [
       [[1, 1, 1, 1]],
       [[1], [1], [1], [1]],
-      [[1, 1, 1, 1, 1]],
-      [[1], [1], [1], [1], [1]],
       [[1, 1, 1]],
       [[1], [1], [1]],
       [[1, 1]],
@@ -35,16 +32,12 @@ function Game() {
       [[1, 1], [0, 1]],
       [[1, 1], [1, 1]],
       [[1]],
-      [[0, 1, 0], [1, 1, 1]],
-      [[1, 1, 1], [1, 1, 1]],
-      [[1, 1, 1], [1, 0]],
-      [[1, 1, 1], [1, 0, 0], [1, 0, 0]],
-      [[1, 1, 1], [0, 0, 1], [0, 0, 1]],
     ];
 
     const colors = getCSSColors();
-
     const newShapes = [];
+
+    // Генерация 2 случайных фигур
     for (let i = 0; i < 2; i++) {
       const randomIndex = Math.floor(Math.random() * shapes.length);
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -52,21 +45,14 @@ function Game() {
     }
 
     setAvailableShapes(newShapes);
-    setDraggedShape(null);
-    setHighlightedCells([]);
   }, []);
 
   useEffect(() => {
-    generateShapes();
-  }, [generateShapes]);
+    if (shapesPlaced < 2) {
+      generateShapes(); // Генерация фигур только если меньше 2 фигур размещено
+    }
+  }, [shapesPlaced, generateShapes]);
 
-  // Начало перетаскивания (для мышки)
-  const handleDragStart = (shape) => {
-    setDraggedShape(shape);
-    setIsDragging(true); // Устанавливаем флаг перетаскивания
-  };
-
-  // Проверка, можно ли разместить фигуру
   const canPlaceShape = (shape, row, col) => {
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[i].length; j++) {
@@ -81,37 +67,6 @@ function Game() {
     return true;
   };
 
-  // Подсветка поля с учётом занятых клеток
-  const handleDragOver = (row, col) => {
-    if (!draggedShape) return;
-
-    const highlighted = [];
-    let validPlacement = true;
-
-    for (let i = 0; i < draggedShape.shape.length; i++) {
-      for (let j = 0; j < draggedShape.shape[i].length; j++) {
-        if (draggedShape.shape[i][j]) {
-          const targetRow = row + i;
-          const targetCol = col + j;
-
-          if (
-            targetRow >= GRID_SIZE ||
-            targetCol >= GRID_SIZE ||
-            grid[targetRow][targetCol] !== null
-          ) {
-            validPlacement = false;
-          } else {
-            highlighted.push([targetRow, targetCol]);
-          }
-        }
-      }
-    }
-
-    setHighlightedCells(validPlacement ? highlighted : []);
-    document.documentElement.style.setProperty('--shape-color', draggedShape.color || '#ccc');
-  };
-
-  // Размещение фигуры на поле
   const placeShape = (shape, row, col) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
 
@@ -123,116 +78,90 @@ function Game() {
       }
     }
 
-    setGrid(clearCompletedRows(newGrid));
+    setGrid(newGrid);
+    setShapesPlaced((prev) => prev + 1); // Увеличиваем счётчик размещённых фигур
+  };
 
-    // Удаляем только первую найденную фигуру
-    const shapeIndex = availableShapes.findIndex(
-      (shapeItem) => shapeItem.shape === draggedShape.shape
+  const Shape = ({ shape, color }) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+      type: 'SHAPE',
+      item: { shape, color },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }));
+
+    return (
+      <div
+        ref={drag}
+        className="shape"
+        style={{
+          opacity: isDragging ? 0.5 : 1,
+          '--shape-color': color,
+        }}
+      >
+        {shape.map((row, rowIndex) => (
+          <div key={rowIndex} className="shape-row">
+            {row.map((cell, colIndex) => (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className={`shape-cell ${cell ? 'filled' : ''}`}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     );
-    if (shapeIndex !== -1) {
-      const updatedShapes = [...availableShapes];
-      updatedShapes.splice(shapeIndex, 1);
-      setAvailableShapes(updatedShapes);
-    }
-
-    setDraggedShape(null);
-    setHighlightedCells([]);
-
-    if (availableShapes.length === 1) {
-      generateShapes();
-    }
   };
 
-  // Очистка завершенных рядов и колонок
-  const clearCompletedRows = (grid) => {
-    const newGrid = grid.map((row) =>
-      row.every((cell) => cell) ? Array(GRID_SIZE).fill(null) : row
+  const Cell = ({ row, col }) => {
+    const [{ isOver, canDrop }, drop] = useDrop(() => ({
+      accept: 'SHAPE',
+      drop: (item) => {
+        if (canPlaceShape(item.shape, row, col)) {
+          placeShape(item.shape, row, col);
+        } else {
+          alert('Cannot place the shape here!');
+        }
+      },
+      canDrop: (item) => canPlaceShape(item.shape, row, col),
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
+    }));
+
+    return (
+      <div
+        ref={drop}
+        className={`cell ${grid[row][col] ? 'filled' : ''} ${
+          isOver && canDrop ? 'highlighted' : ''
+        }`}
+      />
     );
-
-    for (let col = 0; col < GRID_SIZE; col++) {
-      if (newGrid.every((row) => row[col])) {
-        newGrid.forEach((row) => (row[col] = null));
-      }
-    }
-
-    return newGrid;
   };
 
-  // Обработка дропа фигуры (для мышки)
-  const handleDrop = (row, col) => {
-    if (!draggedShape) return;
-
-    if (canPlaceShape(draggedShape.shape, row, col)) {
-      placeShape(draggedShape.shape, row, col);
-    } else {
-      alert('Невозможно разместить фигуру здесь!');
+  useEffect(() => {
+    // Как только разместим 2 фигуры, сбрасываем счётчик
+    if (shapesPlaced >= 2) {
+      setShapesPlaced(0); // Сбрасываем счётчик после размещения двух фигур
     }
-  };
-
-  // Обработка завершения перетаскивания на мобильных устройствах
-  const handleTouchEnd = (e, row, col) => {
-    e.preventDefault();
-    if (isDragging) {
-      if (canPlaceShape(draggedShape.shape, row, col)) {
-        placeShape(draggedShape.shape, row, col);
-      } else {
-        alert('Невозможно разместить фигуру здесь!');
-      }
-      setIsDragging(false); // Сброс флага перетаскивания
-    }
-  };
+  }, [shapesPlaced]);
 
   return (
     <div className="Game">
       <div className="board">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="board-row">
-            {row.map((cell, colIndex) => {
-              const isHighlighted = highlightedCells.some(
-                ([hRow, hCol]) => hRow === rowIndex && hCol === colIndex
-              );
-
-              return (
-                <div
-                  key={`${rowIndex}-${colIndex}`}
-                  className={`cell ${cell ? 'filled' : ''} ${isHighlighted ? 'highlighted' : ''}`}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    handleDragOver(rowIndex, colIndex);
-                  }}
-                  onDrop={() => handleDrop(rowIndex, colIndex)}
-                  onTouchEnd={(e) => handleTouchEnd(e, rowIndex, colIndex)}
-                />
-              );
-            })}
+            {row.map((_, colIndex) => (
+              <Cell key={`${rowIndex}-${colIndex}`} row={rowIndex} col={colIndex} />
+            ))}
           </div>
         ))}
       </div>
       <div className="shapes">
         {availableShapes.map((shapeObj, index) => (
-          <div
-            key={index}
-            className="shape"
-            draggable
-            onDragStart={() => handleDragStart(shapeObj)}
-            onDragEnd={() => {
-              setDraggedShape(null);
-              setHighlightedCells([]);
-              setIsDragging(false);
-            }}
-            style={{ '--shape-color': shapeObj.color }}
-          >
-            {shapeObj.shape.map((row, rowIndex) => (
-              <div key={rowIndex} className="shape-row">
-                {row.map((cell, colIndex) => (
-                  <div
-                    key={`${rowIndex}-${colIndex}`}
-                    className={`shape-cell ${cell ? 'filled' : ''}`}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
+          <Shape key={index} shape={shapeObj.shape} color={shapeObj.color} />
         ))}
       </div>
     </div>
