@@ -9,13 +9,13 @@
   --text-color: #ffffff;
   --menu-color: #151516;
   --extra-color: #727272;
+  --selected-color: #adadad;
 }
 
 .App {
   text-align: center;
   background-color: var(--bg-color);
 }
-
 
 .footer {
   width: 100%;
@@ -44,8 +44,8 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 800px;
-  padding: 0 20px;
+  max-width: 900px;
+  gap: 30px;
 }
 
 .icons > svg {
@@ -56,5 +56,5 @@
 
 .icons > svg:hover {
   transform: scale(1.2);
-  color: var(--highlight-color);
+  color: var(--selected-color);
 }
