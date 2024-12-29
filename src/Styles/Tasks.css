@@ -52,7 +52,6 @@
     margin: 0 auto;
 }
 
-/* Список задач */
 .task-list {
     list-style-type: none;
     padding: 0;
@@ -85,7 +84,6 @@
     margin-top: 4px;
 }
 
-/* Кнопка выполнения задачи */
 .execute-btn {
     font-family: "Noto Sans KR", serif;
     background-color: var(--extra-color);
