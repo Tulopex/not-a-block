@@ -57,3 +57,17 @@
   transform: scale(1.2);
   color: var(--highlight-color);
 }
+
+/* Плавное скрытие и отображение контента */
+.App > .Game, .App > .Tasks {
+  transition: opacity 0.3s ease;
+}
+
+.Game, .Tasks {
+  display: block;
+}
+
+.Game.hidden, .Tasks.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
