@@ -54,7 +54,7 @@
 }
 
 .icons > svg {
-  font-size: 2rem;
+  font-size: 30px;
   color: var(--extra-color);
   transition: transform 0.3s, color 0.3s;
 }
@@ -64,13 +64,11 @@
   color: var(--selected-color);
 }
 
-/* Стиль для активной иконки */
 .icons > svg.active {
   color: var(--selected-color);
   transform: scale(1.2);
 }
 
-/* Добавим анимацию для перехода */
 .icons > svg:not(.active) {
   color: var(--extra-color);
 }
