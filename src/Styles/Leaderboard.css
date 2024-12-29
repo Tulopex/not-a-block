@@ -7,6 +7,7 @@
 
 .leaderboard-title {
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .gif-leaderboard {
@@ -24,13 +25,14 @@
     background-color: var(--menu-task-color);
     margin: 0 auto;
     border-radius: 10px;
+    padding: 10px;
 }
 
 .leaderboard-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    width: 350px;
+    width: 100%;
 }
 
 .leaderboard-item {
@@ -39,18 +41,24 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid var(--extra-color);
-    width: 100%;
 }
 
-.leaderboard-item > * {
-    margin: 0 10px;
+.leaderboard-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между местом и именем */
 }
 
-.leaderboard-item > h4:first-child {
+.place {
     font-weight: bold;
 }
 
-.leaderboard-item > h4:last-child {
+.name {
+    font-size: 1rem;
+}
+
+.points {
     font-size: 0.9rem;
     color: var(--selected-color);
+    text-align: right;
 }
