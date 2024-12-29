@@ -23,7 +23,7 @@
     margin: 0 auto;
 }
 
-.daily-task-list{
+.daily-task-list {
     list-style-type: none;
     padding: 0;
 }
@@ -36,6 +36,23 @@
     width: 300px;
     border-radius: 10px;
     padding: 5px 10px;
+}
+
+.task-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.name-task {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.reward {
+    font-size: 0.9rem;
+    color: var(--selected-color);
+    margin-top: 4px;
 }
 
 .execute-btn {
