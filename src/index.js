@@ -6,12 +6,18 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import { isMobile } from 'react-device-detect';
 import App from './App';
 
-// Выбор backend в зависимости от устройства
-const backend = isMobile ? TouchBackend : HTML5Backend;
+// Опции для TouchBackend
+const backend = isMobile
+  ? TouchBackend
+  : HTML5Backend;
+
+const backendOptions = isMobile
+  ? { enableMouseEvents: true, delayTouchStart: 0 }
+  : {};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <DndProvider backend={backend}>
+  <DndProvider backend={backend} options={backendOptions}>
     <App />
   </DndProvider>
 );

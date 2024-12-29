@@ -115,14 +115,19 @@ function Game() {
   };
 
   const Shape = ({ shape, color, id }) => {
-    const [{ isDragging }, drag] = useDrag(() => ({
+    const [{ isDragging }, drag, preview] = useDrag(() => ({
       type: 'SHAPE',
       item: { shape, color, id },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
     }));
-
+  
+    useEffect(() => {
+      // Для TouchBackend необходимо предварительно подключить preview
+      preview(document.createElement('div'));
+    }, [preview]);
+  
     return (
       <div
         ref={drag}
@@ -130,6 +135,7 @@ function Game() {
         style={{
           opacity: isDragging ? 0.5 : 1,
           '--shape-color': color,
+          touchAction: 'none', // Отключает стандартные жесты
         }}
       >
         {shape.map((row, rowIndex) => (
