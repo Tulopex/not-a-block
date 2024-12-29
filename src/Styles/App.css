@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Zen+Antique+Soft&display=swap');
+
 * {
+  font-family: "Noto Sans KR", serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -8,6 +11,8 @@
   --bg-color: #0d0d0d;
   --text-color: #ffffff;
   --menu-color: #151516;
+  --menu-task-color: #2c2c2c;
+  --task-color: #414141;
   --extra-color: #727272;
   --selected-color: #adadad;
 }
