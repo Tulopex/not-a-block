@@ -14,12 +14,14 @@ function Tasks() {
                     <button className='execute-btn' id='execute-btn'>Start</button>
                 </div>
             </li>
+            <li className='divider'></li>
             <li>
               <div className='daily-task'>
                 <h3 className='name-task' id='name-task'>Donate 10 Stars</h3>
                 <button className='execute-btn' id='execute-btn'>Start</button>
               </div>
             </li>
+            <li className='divider'></li>
             <li>
               <div className='daily-task'>
                 <h3 className='name-task' id='name-task'>Promote Blockchain</h3>
