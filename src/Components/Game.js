@@ -41,16 +41,17 @@ function Game() {
     for (let i = 0; i < 2; i++) {
       const randomIndex = Math.floor(Math.random() * shapes.length);
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      newShapes.push({ shape: shapes[randomIndex], color: randomColor });
+      newShapes.push({ shape: shapes[randomIndex], color: randomColor, id: `${Date.now()}-${i}` });
     }
 
-    setAvailableShapes(newShapes);
+    return newShapes;
   }, []);
 
   useEffect(() => {
     if (availableShapes.length === 0 || shapesPlaced >= 2) {
       setShapesPlaced(0);
-      generateShapes();
+      const shapesWithIds = generateShapes();
+      setAvailableShapes(shapesWithIds);
     }
   }, [shapesPlaced, generateShapes, availableShapes]);
 
@@ -74,7 +75,7 @@ function Game() {
     // Проверка и очистка строк
     updatedGrid = updatedGrid.filter(row => !row.every(cell => cell !== null));
     while (updatedGrid.length < GRID_SIZE) {
-      updatedGrid.unshift(Array(GRID_SIZE).fill(null)); // Добавляем пустую строку сверху
+      updatedGrid.unshift(Array(GRID_SIZE).fill(null));
     }
 
     // Проверка и очистка колонок
@@ -88,7 +89,7 @@ function Game() {
       }
       if (isFullColumn) {
         for (let row = 0; row < GRID_SIZE; row++) {
-          updatedGrid[row][col] = null; // Очищаем колонку
+          updatedGrid[row][col] = null;
         }
       }
     }
@@ -96,7 +97,7 @@ function Game() {
     return updatedGrid;
   };
 
-  const placeShape = (shape, row, col) => {
+  const placeShape = (shape, row, col, shapeId) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
 
     for (let i = 0; i < shape.length; i++) {
@@ -107,18 +108,16 @@ function Game() {
       }
     }
 
-    // Очищаем полные ряды и столбцы
     const clearedGrid = clearFullRowsAndColumns(newGrid);
-
     setGrid(clearedGrid);
-    setShapesPlaced((prev) => prev + 1); // Увеличиваем счетчик размещённых фигур
-    setAvailableShapes((prev) => prev.slice(1)); // Удаляем размещённую фигуру
+    setShapesPlaced((prev) => prev + 1);
+    setAvailableShapes((prev) => prev.filter((shapeObj) => shapeObj.id !== shapeId));
   };
 
-  const Shape = ({ shape, color }) => {
+  const Shape = ({ shape, color, id }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
       type: 'SHAPE',
-      item: { shape, color },
+      item: { shape, color, id },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -152,7 +151,7 @@ function Game() {
       accept: 'SHAPE',
       drop: (item) => {
         if (canPlaceShape(item.shape, row, col)) {
-          placeShape(item.shape, row, col);
+          placeShape(item.shape, row, col, item.id);
         } else {
           alert('Cannot place the shape here!');
         }
@@ -186,8 +185,13 @@ function Game() {
         ))}
       </div>
       <div className="shapes">
-        {availableShapes.map((shapeObj, index) => (
-          <Shape key={index} shape={shapeObj.shape} color={shapeObj.color} />
+        {availableShapes.map((shapeObj) => (
+          <Shape
+            key={shapeObj.id}
+            shape={shapeObj.shape}
+            color={shapeObj.color}
+            id={shapeObj.id}
+          />
         ))}
       </div>
     </div>
