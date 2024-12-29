@@ -58,3 +58,14 @@
   transform: scale(1.2);
   color: var(--selected-color);
 }
+
+/* Стиль для активной иконки */
+.icons > svg.active {
+  color: var(--selected-color);
+  transform: scale(1.2);
+}
+
+/* Добавим анимацию для перехода */
+.icons > svg:not(.active) {
+  color: var(--extra-color);
+}

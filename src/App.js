@@ -10,11 +10,14 @@ import Friends from './Components/Friends';
 import Wallet from './Components/Wallet';
 
 function App() {
-  // Состояния для отображения контента
+  // Состояние для отображения контента
   const [currentContent, setCurrentContent] = useState('game');
+  // Состояние для активной иконки
+  const [activeIcon, setActiveIcon] = useState('game');
 
-  const toggleContent = (content) => {
+  const toggleContent = (content, icon) => {
     setCurrentContent(content);
+    setActiveIcon(icon);
   };
 
   return (
@@ -32,27 +35,32 @@ function App() {
             {/* Иконка задач */}
             <FontAwesomeIcon
               icon={faClipboard}
-              onClick={() => toggleContent('tasks')}
+              onClick={() => toggleContent('tasks', 'tasks')}
+              className={activeIcon === 'tasks' ? 'active' : ''}
             />
             {/* Иконка трофея */}
             <FontAwesomeIcon
               icon={faTrophy}
-              onClick={() => toggleContent('leaderboard')}
+              onClick={() => toggleContent('leaderboard', 'leaderboard')}
+              className={activeIcon === 'leaderboard' ? 'active' : ''}
             />
             {/* Иконка геймпада по центру */}
             <FontAwesomeIcon
               icon={faGamepad}
-              onClick={() => toggleContent('game')}
+              onClick={() => toggleContent('game', 'game')}
+              className={activeIcon === 'game' ? 'active' : ''}
             />
             {/* Иконка группы пользователей справа от геймпада */}
             <FontAwesomeIcon
               icon={faUserGroup}
-              onClick={() => toggleContent('friends')}
+              onClick={() => toggleContent('friends', 'friends')}
+              className={activeIcon === 'friends' ? 'active' : ''}
             />
             {/* Иконка кошелька справа от группы пользователей */}
             <FontAwesomeIcon
               icon={faWallet}
-              onClick={() => toggleContent('wallet')}
+              onClick={() => toggleContent('wallet', 'wallet')}
+              className={activeIcon === 'wallet' ? 'active' : ''}
             />
           </div>
         </div>
