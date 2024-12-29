@@ -9,7 +9,7 @@ function Game() {
     Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null))
   );
   const [availableShapes, setAvailableShapes] = useState([]);
-  const [shapesPlaced, setShapesPlaced] = useState(0); // Счётчик размещённых фигур
+  const [shapesPlaced, setShapesPlaced] = useState(0); // Счетчик размещенных фигур
 
   const getCSSColors = () => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -48,10 +48,11 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    if (shapesPlaced < 2) {
-      generateShapes(); // Генерация фигур только если меньше 2 фигур размещено
+    if (availableShapes.length === 0 || shapesPlaced >= 2) {
+      setShapesPlaced(0);
+      generateShapes();
     }
-  }, [shapesPlaced, generateShapes]);
+  }, [shapesPlaced, generateShapes, availableShapes]);
 
   const canPlaceShape = (shape, row, col) => {
     for (let i = 0; i < shape.length; i++) {
@@ -67,6 +68,34 @@ function Game() {
     return true;
   };
 
+  const clearFullRowsAndColumns = (newGrid) => {
+    let updatedGrid = newGrid;
+
+    // Проверка и очистка строк
+    updatedGrid = updatedGrid.filter(row => !row.every(cell => cell !== null));
+    while (updatedGrid.length < GRID_SIZE) {
+      updatedGrid.unshift(Array(GRID_SIZE).fill(null)); // Добавляем пустую строку сверху
+    }
+
+    // Проверка и очистка колонок
+    for (let col = 0; col < GRID_SIZE; col++) {
+      let isFullColumn = true;
+      for (let row = 0; row < GRID_SIZE; row++) {
+        if (updatedGrid[row][col] === null) {
+          isFullColumn = false;
+          break;
+        }
+      }
+      if (isFullColumn) {
+        for (let row = 0; row < GRID_SIZE; row++) {
+          updatedGrid[row][col] = null; // Очищаем колонку
+        }
+      }
+    }
+
+    return updatedGrid;
+  };
+
   const placeShape = (shape, row, col) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
 
@@ -78,8 +107,12 @@ function Game() {
       }
     }
 
-    setGrid(newGrid);
-    setShapesPlaced((prev) => prev + 1); // Увеличиваем счётчик размещённых фигур
+    // Очищаем полные ряды и столбцы
+    const clearedGrid = clearFullRowsAndColumns(newGrid);
+
+    setGrid(clearedGrid);
+    setShapesPlaced((prev) => prev + 1); // Увеличиваем счетчик размещённых фигур
+    setAvailableShapes((prev) => prev.slice(1)); // Удаляем размещённую фигуру
   };
 
   const Shape = ({ shape, color }) => {
@@ -140,13 +173,6 @@ function Game() {
       />
     );
   };
-
-  useEffect(() => {
-    // Как только разместим 2 фигуры, сбрасываем счётчик
-    if (shapesPlaced >= 2) {
-      setShapesPlaced(0); // Сбрасываем счётчик после размещения двух фигур
-    }
-  }, [shapesPlaced]);
 
   return (
     <div className="Game">
