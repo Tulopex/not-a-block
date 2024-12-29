@@ -30,7 +30,6 @@
   align-items: center;
   padding: 10px 20px;
   z-index: 10;
-  
 }
 
 .content {
@@ -41,33 +40,21 @@
   background: none;
 }
 
-.icon {
+.icons {
   display: flex;
-  gap: 50px;
-  font-size: 2rem;
-  color: var(--extra-color);
-  background: none;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
 }
 
-.icon > svg {
+.icons > svg {
+  font-size: 2rem;
+  color: var(--extra-color);
   transition: transform 0.3s, color 0.3s;
 }
 
-.icon > svg:hover {
+.icons > svg:hover {
   transform: scale(1.2);
   color: var(--highlight-color);
-}
-
-/* Плавное скрытие и отображение контента */
-.App > .Game, .App > .Tasks {
-  transition: opacity 0.3s ease;
-}
-
-.Game, .Tasks {
-  display: block;
-}
-
-.Game.hidden, .Tasks.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
