@@ -50,8 +50,7 @@ function Game() {
   useEffect(() => {
     if (availableShapes.length === 0 || shapesPlaced >= 2) {
       setShapesPlaced(0);
-      const shapesWithIds = generateShapes();
-      setAvailableShapes(shapesWithIds);
+      setAvailableShapes(generateShapes());
     }
   }, [shapesPlaced, generateShapes, availableShapes]);
 
@@ -69,34 +68,6 @@ function Game() {
     return true;
   };
 
-  const clearFullRowsAndColumns = (newGrid) => {
-    let updatedGrid = newGrid;
-
-    // Проверка и очистка строк
-    updatedGrid = updatedGrid.filter(row => !row.every(cell => cell !== null));
-    while (updatedGrid.length < GRID_SIZE) {
-      updatedGrid.unshift(Array(GRID_SIZE).fill(null));
-    }
-
-    // Проверка и очистка колонок
-    for (let col = 0; col < GRID_SIZE; col++) {
-      let isFullColumn = true;
-      for (let row = 0; row < GRID_SIZE; row++) {
-        if (updatedGrid[row][col] === null) {
-          isFullColumn = false;
-          break;
-        }
-      }
-      if (isFullColumn) {
-        for (let row = 0; row < GRID_SIZE; row++) {
-          updatedGrid[row][col] = null;
-        }
-      }
-    }
-
-    return updatedGrid;
-  };
-
   const placeShape = (shape, row, col, shapeId) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
 
@@ -108,26 +79,20 @@ function Game() {
       }
     }
 
-    const clearedGrid = clearFullRowsAndColumns(newGrid);
-    setGrid(clearedGrid);
+    setGrid(newGrid);
     setShapesPlaced((prev) => prev + 1);
     setAvailableShapes((prev) => prev.filter((shapeObj) => shapeObj.id !== shapeId));
   };
 
   const Shape = ({ shape, color, id }) => {
-    const [{ isDragging }, drag, preview] = useDrag(() => ({
+    const [{ isDragging }, drag] = useDrag(() => ({
       type: 'SHAPE',
       item: { shape, color, id },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
     }));
-  
-    useEffect(() => {
-      // Для TouchBackend необходимо предварительно подключить preview
-      preview(document.createElement('div'));
-    }, [preview]);
-  
+
     return (
       <div
         ref={drag}
@@ -135,7 +100,8 @@ function Game() {
         style={{
           opacity: isDragging ? 0.5 : 1,
           '--shape-color': color,
-          touchAction: 'none', // Отключает стандартные жесты
+          touchAction: 'none',
+          cursor: 'move',
         }}
       >
         {shape.map((row, rowIndex) => (
@@ -153,7 +119,7 @@ function Game() {
   };
 
   const Cell = ({ row, col }) => {
-    const [{ isOver, canDrop, item }, drop] = useDrop(() => ({
+    const [{ isOver, canDrop }, drop] = useDrop(() => ({
       accept: 'SHAPE',
       drop: (item) => {
         if (canPlaceShape(item.shape, row, col)) {
@@ -166,19 +132,14 @@ function Game() {
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
-        item: monitor.getItem(),
       }),
     }));
-  
-    const isHighlighted = isOver && canDrop && item?.shape?.some((shapeRow, i) =>
-      shapeRow.some((cell, j) => cell && row === row + i && col === col + j)
-    );
-  
+
     return (
       <div
         ref={drop}
         className={`cell ${grid[row][col] ? 'filled' : ''} ${
-          isHighlighted ? 'highlighted' : ''
+          isOver && canDrop ? 'highlighted' : ''
         }`}
       />
     );
