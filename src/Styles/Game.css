@@ -10,8 +10,8 @@
 }
 
 .shape {
-  touch-action: none; /* Отключает стандартное поведение касаний (например, прокрутку) */
-  user-select: none; /* Отключает выделение текста */
+  touch-action: none;
+  user-select: none;
 }
 
 
