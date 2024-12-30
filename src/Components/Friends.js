@@ -14,7 +14,13 @@ function Friends() {
             <div className='friends-info'>
               <h4 className='name-friend'><span id='name-friend'>Tulopex</span></h4>
             </div>
-            <h4 className='points-friend'><span id='points-friend'>100</span> Block</h4>
+            <h4 className='points-friend'>+<span id='points-friend'>245</span> Block</h4>
+          </li>
+          <li className='friends-item'>
+            <div className='friends-info'>
+              <h4 className='name-friend'><span id='name-friend'>Julian</span></h4>
+            </div>
+            <h4 className='points-friend'>+<span id='points-friend'>100</span> Block</h4>
           </li>
         </ul>
       </div>
