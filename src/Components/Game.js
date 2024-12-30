@@ -153,7 +153,7 @@ function Game() {
   };
 
   const Cell = ({ row, col }) => {
-    const [{ isOver, canDrop }, drop] = useDrop(() => ({
+    const [{ isOver, canDrop, item }, drop] = useDrop(() => ({
       accept: 'SHAPE',
       drop: (item) => {
         if (canPlaceShape(item.shape, row, col)) {
@@ -166,14 +166,19 @@ function Game() {
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
+        item: monitor.getItem(),
       }),
     }));
-
+  
+    const isHighlighted = isOver && canDrop && item?.shape?.some((shapeRow, i) =>
+      shapeRow.some((cell, j) => cell && row === row + i && col === col + j)
+    );
+  
     return (
       <div
         ref={drop}
         className={`cell ${grid[row][col] ? 'filled' : ''} ${
-          isOver && canDrop ? 'highlighted' : ''
+          isHighlighted ? 'highlighted' : ''
         }`}
       />
     );
