@@ -3,6 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import '../Styles/Game.css';
 
 const GRID_SIZE = 8;
+const CELL_SIZE = 35; // Размер одной ячейки в пикселях
 
 function Game() {
   const [grid, setGrid] = useState(
@@ -10,6 +11,8 @@ function Game() {
   );
   const [availableShapes, setAvailableShapes] = useState([]);
   const [shapesPlaced, setShapesPlaced] = useState(0); // Счетчик размещенных фигур
+  const [hoveredShape, setHoveredShape] = useState(null);
+  const [hoveredPosition, setHoveredPosition] = useState(null);
 
   const getCSSColors = () => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -54,20 +57,28 @@ function Game() {
     }
   }, [shapesPlaced, generateShapes, availableShapes]);
 
-  const canPlaceShape = (shape, row, col) => {
+  const canPlaceShape = (shape, startRow, startCol) => {
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[i].length; j++) {
-        if (
-          shape[i][j] &&
-          (row + i >= GRID_SIZE || col + j >= GRID_SIZE || grid[row + i][col + j])
-        ) {
-          return false;
+        if (shape[i][j]) {
+          const targetRow = startRow + i;
+          const targetCol = startCol + j;
+  
+          if (
+            targetRow < 0 ||
+            targetRow >= GRID_SIZE ||
+            targetCol < 0 ||
+            targetCol >= GRID_SIZE ||
+            grid[targetRow][targetCol]
+          ) {
+            return false;
+          }
         }
       }
     }
     return true;
   };
-
+  
   const placeShape = (shape, row, col, shapeId) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
 
@@ -121,12 +132,24 @@ function Game() {
   const Cell = ({ row, col }) => {
     const [{ isOver, canDrop }, drop] = useDrop(() => ({
       accept: 'SHAPE',
-      drop: (item) => {
-        if (canPlaceShape(item.shape, row, col)) {
-          placeShape(item.shape, row, col, item.id);
+      drop: (item, monitor) => {
+        const offset = monitor.getClientOffset();
+        const boardRect = document.querySelector('.board').getBoundingClientRect();
+  
+        if (!offset || !boardRect) return;
+  
+        // Вычисляем целевую ячейку
+        const targetRow = Math.floor((offset.y - boardRect.top) / CELL_SIZE);
+        const targetCol = Math.floor((offset.x - boardRect.left) / CELL_SIZE);
+  
+        if (canPlaceShape(item.shape, targetRow, targetCol)) {
+          placeShape(item.shape, targetRow, targetCol, item.id);
         } else {
           alert('Cannot place the shape here!');
         }
+  
+        setHoveredShape(null);
+        setHoveredPosition(null);
       },
       canDrop: (item) => canPlaceShape(item.shape, row, col),
       collect: (monitor) => ({
@@ -134,10 +157,18 @@ function Game() {
         canDrop: monitor.canDrop(),
       }),
     }));
-
+  
     return (
       <div
         ref={drop}
+        onMouseOver={() => {
+          setHoveredShape(hoveredShape);
+          setHoveredPosition({ row, col });
+        }}
+        onMouseOut={() => {
+          setHoveredShape(null);
+          setHoveredPosition(null);
+        }}
         className={`cell ${grid[row][col] ? 'filled' : ''} ${
           isOver && canDrop ? 'highlighted' : ''
         }`}
@@ -171,3 +202,4 @@ function Game() {
 }
 
 export default Game;
+

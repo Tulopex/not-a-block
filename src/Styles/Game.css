@@ -24,6 +24,8 @@
 .board {
   display: inline-block;
   margin: 10px;
+  border: 2px solid #333;
+  user-select: none;
 }
 
 .board-row {
@@ -34,6 +36,7 @@
   width: 35px;
   height: 35px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
   display: inline-block;
 }
 
