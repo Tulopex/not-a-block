@@ -80,7 +80,8 @@ function Game() {
   
   const placeShape = (shape, row, col, shapeId) => {
     const newGrid = JSON.parse(JSON.stringify(grid));
-
+  
+    // Размещение фигуры на поле
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[i].length; j++) {
         if (shape[i][j]) {
@@ -88,11 +89,21 @@ function Game() {
         }
       }
     }
-
+  
+    // Проверка на полностью заполненные ряды и их очистка
+    for (let r = 0; r < GRID_SIZE; r++) {
+      if (newGrid[r].every(cell => cell === 1)) {
+        // Если ряд заполнен, очищаем только его
+        newGrid[r] = Array(GRID_SIZE).fill(null);
+      }
+    }
+  
     setGrid(newGrid);
     setShapesPlaced((prev) => prev + 1);
     setAvailableShapes((prev) => prev.filter((shapeObj) => shapeObj.id !== shapeId));
   };
+  
+  
 
   const Shape = ({ shape, color, id }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
