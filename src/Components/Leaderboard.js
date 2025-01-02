@@ -6,6 +6,17 @@ function Leaderboard() {
     <div className='Leaderboard'>
       <img className='gif-leaderboard' src={process.env.PUBLIC_URL + '/img/trophy.gif'} alt='leaderboard' />
       <h1 className='leaderboard-title'>Leaderboard</h1>
+      <div className='your-place-leaderboard'>
+        <ul className='leaderboard-list'>
+          <li className='leaderboard-item-you'>
+            <div className='leaderboard-info'>
+              <h4 className='place'><span id='place'>200</span>.</h4>
+              <h4 className='name'><span id='name'>You</span></h4>
+            </div>
+            <h4 className='points'><span id='points'>10.000</span> Block</h4>
+          </li>
+        </ul>
+      </div>
       <div className='leaderboard-content'>
         <ul className='leaderboard-list'>
           <li className='leaderboard-item'>

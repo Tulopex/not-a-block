@@ -46,7 +46,7 @@
 .leaderboard-info {
     display: flex;
     align-items: center;
-    gap: 10px; /* Расстояние между местом и именем */
+    gap: 10px;
 }
 
 .place {
@@ -61,4 +61,24 @@
     font-size: 14px;
     color: var(--selected-color);
     text-align: right;
+}
+
+.your-place-leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 340px;
+    background-color: var(--menu-task-color);
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.leaderboard-item-you {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
