@@ -7,7 +7,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 function Friends() {
   return (
     <div className='Friends'>
-      <img className='gif-friends' src={process.env.PUBLIC_URL + '/img/friends.gif'} alt='friends' />
+      <img className='gif-friends' src={process.env.PUBLIC_URL + '/img/friends.gif'} alt='friends' loading="eager"/>
       <h1 className='friends-title'>Friends</h1>
       <p className='friends-text'>Invite your friends and get 10% of their earned Block</p>
       <div className='invite-friends-container'>
