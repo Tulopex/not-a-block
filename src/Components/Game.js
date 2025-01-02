@@ -157,8 +157,6 @@ function Game() {
   
         if (canPlaceShape(item.shape, targetRow, targetCol)) {
           placeShape(item.shape, targetRow, targetCol, item.id);
-        } else {
-          alert('Cannot place the shape here!');
         }
   
         setHoveredShape(null);
