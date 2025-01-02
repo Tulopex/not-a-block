@@ -4,7 +4,7 @@ import '../Styles/Leaderboard.css';
 function Leaderboard() {
   return (
     <div className='Leaderboard'>
-      <img className='gif-leaderboard' src={process.env.PUBLIC_URL + '/img/trophy.gif'} alt='leaderboard' loading="eager" />
+      <img className='gif-leaderboard' src={process.env.PUBLIC_URL + '/img/trophy.gif'} alt='leaderboard' loading="eager" rel='preload'/>
       <h1 className='leaderboard-title'>Leaderboard</h1>
       <div className='your-place-leaderboard'>
         <ul className='leaderboard-list'>
