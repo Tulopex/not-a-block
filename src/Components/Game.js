@@ -12,7 +12,6 @@ function Game() {
   const [availableShapes, setAvailableShapes] = useState([]);
   const [shapesPlaced, setShapesPlaced] = useState(0); // Счетчик размещенных фигур
   const [hoveredShape, setHoveredShape] = useState(null);
-  const [hoveredPosition, setHoveredPosition] = useState(null);
 
   const getCSSColors = () => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -149,7 +148,6 @@ function Game() {
         }
   
         setHoveredShape(null);
-        setHoveredPosition(null);
       },
       canDrop: (item) => canPlaceShape(item.shape, row, col),
       collect: (monitor) => ({
@@ -163,11 +161,9 @@ function Game() {
         ref={drop}
         onMouseOver={() => {
           setHoveredShape(hoveredShape);
-          setHoveredPosition({ row, col });
         }}
         onMouseOut={() => {
           setHoveredShape(null);
-          setHoveredPosition(null);
         }}
         className={`cell ${grid[row][col] ? 'filled' : ''} ${
           isOver && canDrop ? 'highlighted' : ''
