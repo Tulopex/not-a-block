@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { isMobile } from 'react-device-detect';
 
-import { init } from '@telegram-apps/sdk';
+import { init, initData } from '@telegram-apps/sdk';
 
 import App from './App';
 
@@ -15,6 +15,9 @@ const initializeTelegramSDK = async () => {
     console.log("Инициализация окружения Telegram");
     const [miniApp] = init();
     await miniApp.ready();
+    await initData(miniApp);
+    const userId = await miniApp.user.getId();
+    console.log(`User ID: ${userId}`);
   } catch (error) {
     // В случае ошибки инициализируем фейковое окружение
     console.log('Mock Telegram environment initialized');
