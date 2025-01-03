@@ -29,13 +29,7 @@ const initializeTelegramSDK = async () => {
     await miniApp.ready();
 
     await initData();
-    const userID = window.userID;
-    if (userID) {
-      console.log(`User ID: ${userID}`);
-    } else {
-      console.warn('User ID is not available.');
-    }
-    
+
     if (miniApp.mount.isAvailable()) {
       miniApp.mount();
       miniApp.isMounted(); // true
