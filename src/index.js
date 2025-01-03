@@ -30,6 +30,12 @@ const initializeTelegramSDK = async () => {
 
     await initData(miniApp);
 
+    if (miniApp.mount.isAvailable()) {
+      miniApp.mount();
+      miniApp.isMounted(); // true
+    }
+
+    miniApp.setHeaderColor('#0d0d0d');
 
   } catch (error) {
     // В случае ошибки инициализируем фейковое окружение
