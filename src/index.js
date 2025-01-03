@@ -39,6 +39,12 @@ const initializeTelegramSDK = async () => {
       miniApp.isMounted(); // true
     }
 
+    root.render(
+      <DndProvider backend={backend} options={backendOptions}>
+        <App firstName={user.first_name} />
+      </DndProvider>
+    );
+
   } catch (error) {
     // В случае ошибки инициализируем фейковое окружение
     console.log('Mock Telegram environment initialized');

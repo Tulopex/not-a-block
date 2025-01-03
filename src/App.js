@@ -9,7 +9,7 @@ import Leaderboard from './Components/Leaderboard';
 import Friends from './Components/Friends';
 import Wallet from './Components/Wallet';
 
-function App() {
+function App({ firstName }) {
   // Состояние для отображения контента
   const [currentContent, setCurrentContent] = useState('game');
   // Состояние для активной иконки
@@ -27,7 +27,7 @@ function App() {
       {currentContent === 'tasks' && <Tasks />}
       {currentContent === 'leaderboard' && <Leaderboard />}
       {currentContent === 'friends' && <Friends />}
-      {currentContent === 'wallet' && <Wallet />}
+      {currentContent === 'wallet' && <Wallet firstName={firstName} />}
 
       <div className="footer">
         <div className="content">
@@ -50,13 +50,13 @@ function App() {
               onClick={() => toggleContent('game', 'game')}
               className={activeIcon === 'game' ? 'active' : ''}
             />
-            {/* Иконка группы пользователей справа от геймпада */}
+            {/* Иконка группы пользователей */}
             <FontAwesomeIcon
               icon={faUserGroup}
               onClick={() => toggleContent('friends', 'friends')}
               className={activeIcon === 'friends' ? 'active' : ''}
             />
-            {/* Иконка кошелька справа от группы пользователей */}
+            {/* Иконка кошелька */}
             <FontAwesomeIcon
               icon={faWallet}
               onClick={() => toggleContent('wallet', 'wallet')}
