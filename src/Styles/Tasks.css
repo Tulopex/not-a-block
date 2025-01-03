@@ -3,7 +3,6 @@
     height: 150vh;
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: "Noto Sans KR", serif;
 }
 
 .tasks-title {
@@ -85,7 +84,7 @@
 }
 
 .execute-btn {
-    font-family: "Noto Sans KR", serif;
+    font-family: "Roboto", serif;
     background-color: var(--extra-color);
     border: none;
     color: var(--text-color);
