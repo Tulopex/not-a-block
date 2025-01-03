@@ -84,7 +84,6 @@
 }
 
 .execute-btn {
-    font-family: "Roboto", serif;
     background-color: var(--extra-color);
     border: none;
     color: var(--text-color);
