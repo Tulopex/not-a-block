@@ -1,17 +1,25 @@
 import React from 'react';
 import '../Styles/Friends.css';
 
+import { invokeShareURL } from '../index';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 function Friends() {
+  const handleInviteClick = () => {
+    invokeShareURL();
+  };
+
   return (
     <div className='Friends'>
       <img className='gif-friends' src={process.env.PUBLIC_URL + '/img/friends.gif'} alt='friends' loading="eager" rel='preload'/>
       <h1 className='friends-title'>Friends</h1>
       <p className='friends-text'>Invite your friends and get 10% of their earned Block</p>
       <div className='invite-friends-container'>
-        <button className='invite-friends' id='invite-friends'>Invite</button>
+        <button className='invite-friends' id='invite-friends' onClick={handleInviteClick}>
+          Invite
+        </button>
         <button className='invite-friends-copy' id='invite-friends-copy'>
           <FontAwesomeIcon icon={faCopy} />
         </button>
