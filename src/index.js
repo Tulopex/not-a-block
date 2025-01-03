@@ -37,7 +37,7 @@ const initializeTelegramSDK = async () => {
 
     if (miniApp.setHeaderColor.isAvailable()) {
       miniApp.setHeaderColor('#0d0d0d');
-      miniApp.headerColor(); // 'bg_color'
+      miniApp.headerColor('#0d0d0d'); // 'bg_color'
     }
 
   } catch (error) {
