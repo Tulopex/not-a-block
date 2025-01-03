@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect';
 
 import App from './App';
 
-import { init, initData, shareURL } from '@telegram-apps/sdk';
+import { init, shareURL } from '@telegram-apps/sdk';
 
 // Функция для вызова shareURL
 export const invokeShareURL = () => {
@@ -27,8 +27,6 @@ const initializeTelegramSDK = async () => {
     console.log("Инициализация окружения Telegram");
     const [miniApp] = init();
     await miniApp.ready();
-
-    await initData(miniApp);
 
     if (miniApp.mount.isAvailable()) {
       miniApp.mount();
