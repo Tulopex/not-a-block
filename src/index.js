@@ -29,6 +29,7 @@ const initializeTelegramSDK = async () => {
     await miniApp.ready();
 
     await initData(miniApp);
+    console.log("ID: ", miniApp.user.id);
 
     if (miniApp.mount.isAvailable()) {
       miniApp.mount();
