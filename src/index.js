@@ -35,11 +35,6 @@ const initializeTelegramSDK = async () => {
       miniApp.isMounted(); // true
     }
 
-    if (miniApp.setHeaderColor.isAvailable()) {
-      miniApp.setHeaderColor('#0d0d0d');
-      miniApp.headerColor('#0d0d0d'); // 'bg_color'
-    }
-
   } catch (error) {
     // В случае ошибки инициализируем фейковое окружение
     console.log('Mock Telegram environment initialized');
