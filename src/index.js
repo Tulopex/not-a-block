@@ -35,7 +35,10 @@ const initializeTelegramSDK = async () => {
       miniApp.isMounted(); // true
     }
 
-    miniApp.setHeaderColor('#0d0d0d');
+    if (miniApp.setHeaderColor.isAvailable()) {
+      miniApp.setHeaderColor('#0d0d0d');
+      miniApp.headerColor(); // 'bg_color'
+    }
 
   } catch (error) {
     // В случае ошибки инициализируем фейковое окружение
