@@ -6,6 +6,8 @@
       Telegram.WebApp.ready();
       Telegram.WebApp.expand();
       Telegram.WebApp.setHeaderColor("#0d0d0d");
+      const userID = Telegram.WebApp.initDataUnsafe.user.id;
+      console.log(userID);
     </script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
