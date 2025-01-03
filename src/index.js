@@ -4,7 +4,25 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { isMobile } from 'react-device-detect';
+
+import { init } from '@telegram-apps/sdk';
+
 import App from './App';
+
+const initializeTelegramSDK = async () => {
+  try {
+    // Попытка инициализировать настоящее окружение Telegram
+    console.log("Инициализация окружения Telegram");
+    const [miniApp] = init();
+    await miniApp.ready();
+  } catch (error) {
+    // В случае ошибки инициализируем фейковое окружение
+    console.log('Mock Telegram environment initialized');
+  }
+};
+
+// Инициализация SDK
+initializeTelegramSDK();
 
 // Опции для TouchBackend
 const backend = isMobile
