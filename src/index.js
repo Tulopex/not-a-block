@@ -9,10 +9,6 @@ import App from './App';
 
 import { init, initData, shareURL } from '@telegram-apps/sdk';
 
-const rootElement = document.getElementById('root');
-const userID = rootElement.getAttribute('data-user-id');
-console.log('UserID from index.js:', userID);
-
 // Функция для вызова shareURL
 export const invokeShareURL = () => {
   if (shareURL.isAvailable()) {
